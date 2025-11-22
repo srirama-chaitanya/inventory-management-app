@@ -1,0 +1,38 @@
+# --- DEPENDENCIES ---
+# Ignore node_modules in Root, Backend, and Frontend
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# --- SECURITY (CRITICAL) ---
+# Ignore Environment Variables
+.env
+backend/.env
+frontend/.env.local
+
+# --- DATABASE ---
+# Ignore local SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+backend/inventory.db
+
+# --- BACKEND FILES ---
+# Ignore uploaded files but keep the folder
+backend/uploads/*
+!backend/uploads/.gitkeep
+# Ignore logs
+*.log
+npm-debug.log*
+
+# --- FRONTEND FILES ---
+# Ignore React build output
+build/
+dist/
+.eslintcache
+
+# --- OS / SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

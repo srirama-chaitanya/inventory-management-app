@@ -1,17 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Connect to SQLite (creates 'inventory.db' automatically)
 const db = new sqlite3.Database(path.join(__dirname, 'inventory.db'), (err) => {
-    if (err) {
-        console.error('Error opening database:', err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
-    }
+    if (err) console.error(err.message);
+    else console.log('Connected to SQLite database.');
 });
 
 db.serialize(() => {
-    // 1. Products Table
+    // 1. Products
     db.run(`CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT UNIQUE NOT NULL,
@@ -23,7 +19,7 @@ db.serialize(() => {
         image TEXT
     )`);
 
-    // 2. History Table (Audit Log)
+    // 2. History
     db.run(`CREATE TABLE IF NOT EXISTS inventory_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         product_id INTEGER,
@@ -32,6 +28,13 @@ db.serialize(() => {
         change_date TEXT,
         action_type TEXT,
         FOREIGN KEY(product_id) REFERENCES products(id)
+    )`);
+
+    // 3. USERS (New!)
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
     )`);
 });
 
