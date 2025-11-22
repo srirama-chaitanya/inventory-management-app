@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '../api'; // <--- FIX 1: Import our API helper
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -13,18 +13,20 @@ const LoginPage = () => {
     e.preventDefault();
     setError('');
     
-    const endpoint = isRegistering ? '/api/register' : '/api/login';
+    // <--- FIX 2: Use simple paths. The API helper adds '/api' automatically.
+    const endpoint = isRegistering ? '/register' : '/login';
     
     try {
-      // Use standard axios here because we don't have a token yet
-      const response = await axios.post(`http://localhost:5000${endpoint}`, { username, password });
+      // <--- FIX 3: Use 'API.post' instead of 'axios.post'
+      // This uses the Live Render URL defined in api.js
+      const response = await API.post(endpoint, { username, password });
       
       // Save the user info (Token + ID) to LocalStorage
       localStorage.setItem('userProfile', JSON.stringify(response.data));
       
       // Redirect to Dashboard
       navigate('/');
-      window.location.reload(); // Reload to ensure API client picks up the new token
+      window.location.reload();
     } catch (err) {
       setError(err.response?.data?.error || 'Something went wrong');
     }
